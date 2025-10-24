@@ -1,0 +1,543 @@
+// ==============================
+// ========== LAB 01 ============
+// Structures, Pointers, Arrays
+// ==============================
+
+#include <iostream>
+using namespace std;
+
+// -------- Structures: Definition & Access --------
+struct Books {
+    char title[50];
+    char author[50];
+    char subject[100];
+    int  book_id;
+};
+
+void printBookByValue(Books book) {
+    cout << "Book title  : " << book.title  << '\n';
+    cout << "Book author : " << book.author << '\n';
+    cout << "Book subject: " << book.subject<< '\n';
+    cout << "Book id     : " << book.book_id<< '\n';
+}
+
+void printBookByPtr(Books* book) {
+    cout << "Book title  : " << book->title  << '\n';
+    cout << "Book author : " << book->author << '\n';
+    cout << "Book subject: " << book->subject<< '\n';
+    cout << "Book id     : " << book->book_id<< '\n';
+}
+
+// -------- Pointers: Demo --------
+void pointerDemo() {
+    int var1 = 30;
+    int* ptr1 = &var1;
+    int** ptr2 = &ptr1;
+
+    cout << "Value at ptr1 (address of var1): " << ptr1  << '\n';
+    cout << "Value at var1                  : " << var1  << '\n';
+    cout << "Value using *ptr1              : " << *ptr1 << '\n';
+    cout << "Value at ptr2 (address of ptr1): " << ptr2  << '\n';
+    cout << "Value stored at *ptr2 (ptr1)   : " << *ptr2 << '\n';
+    cout << "Value using **ptr2 (var1)      : " << **ptr2<< '\n';
+}
+
+// -------- Dynamic 2D Array (Array-of-Pointers method) --------
+void dynamic2DArrayDemo() {
+    int m = 3, n = 4, c = 0;
+    int** a = new int*[m];
+    for (int i = 0; i < m; ++i) a[i] = new int[n];
+
+    for (int i = 0; i < m; ++i)
+        for (int j = 0; j < n; ++j)
+            a[i][j] = ++c;
+
+    cout << "\nDynamic 2D Array (3x4):\n";
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) cout << a[i][j] << ' ';
+        cout << '\n';
+    }
+
+    for (int i = 0; i < m; ++i) delete[] a[i];
+    delete[] a;
+}
+
+// -------- Practice Problems --------
+// Activity 1: Person structure (name, age, salary)
+struct Person {
+    char name[50];
+    int  age;
+    float salary;
+};
+
+void activity1_person() {
+    Person p = {"Ali", 25, 50000.0f};
+    cout << "\n[Activity 1]\n";
+    cout << "Name: " << p.name << "\nAge: " << p.age << "\nSalary: " << p.salary << '\n';
+}
+
+// Activity 2: Students array + queries
+struct Student {
+    int rollno;
+    char name[50];
+    int age;
+    char address[80];
+};
+
+void activity2_students() {
+    cout << "\n[Activity 2]\n";
+    const int N = 10;
+    Student s[N] = {
+        {1, "Ahsan", 14, "Hostel 1"},
+        {2, "Sara", 13, "Hostel 2"},
+        {3, "Bilal", 12, "Hostel 3"},
+        {4, "Maya", 14, "Hostel 4"},
+        {5, "Raza", 11, "Hostel 5"},
+        {6, "Huda", 12, "Hostel 6"},
+        {7, "Usman", 13, "Hostel 7"},
+        {8, "Noor", 14, "Hostel 8"},
+        {9, "Ali", 12, "Hostel 9"},
+        {10,"Hassan",11, "Hostel 10"}
+    };
+
+    cout << "Names with age 14:\n";
+    for (int i = 0; i < N; ++i) if (s[i].age == 14) cout << s[i].name << '\n';
+
+    cout << "\nNames with even roll numbers:\n";
+    for (int i = 0; i < N; ++i) if ((s[i].rollno % 2) == 0) cout << s[i].name << '\n';
+
+    int query = 4; // example; replace with user input if needed
+    cout << "\nDetails for roll no " << query << ":\n";
+    for (int i = 0; i < N; ++i) if (s[i].rollno == query) {
+        cout << s[i].name << ", Age: " << s[i].age << ", Address: " << s[i].address << '\n';
+        break;
+    }
+}
+
+// Activity 3: Array + pointer traversal + max
+void activity3_arrayPointer() {
+    cout << "\n[Activity 3]\n";
+    int arr[6] = {5, 9, 1, 7, 2, 8};
+    int* p = arr;
+
+    cout << "Array via pointer: ";
+    for (int i = 0; i < 6; ++i) cout << *(p + i) << ' ';
+    cout << '\n';
+
+    int mx = *p;
+    for (int i = 1; i < 6; ++i) if (*(p + i) > mx) mx = *(p + i);
+    cout << "Max via pointer: " << mx << '\n';
+}
+
+// Activity 4: smallest_value & traversal_back
+int smallest_value(int* temp, int size) {
+    int small = temp[0];
+    for (int i = 1; i < size; ++i) if (temp[i] < small) small = temp[i];
+    return small;
+}
+void traversal_back(int* temp, int size) {
+    for (int i = size - 1; i >= 0; --i)
+        cout << "Value: " << temp[i] << " at address: " << (temp + i) << '\n';
+}
+
+// -------- MAIN (LAB 01) --------
+int main() {
+    cout << "===== LAB 01: Structures, Pointers, Arrays =====\n\n";
+
+    // Structures examples
+    Books b1 = {"Learn C++ Programming", "Chand Miyan", "C++ Programming", 6495407};
+    Books b2 = {"Telecom Billing", "Yakit Singha", "Telecom", 6495700};
+    printBookByValue(b1);
+    cout << '\n';
+    printBookByPtr(&b2);
+
+    cout << "\n--- Pointer Demo ---\n";
+    pointerDemo();
+
+    cout << "\n--- Dynamic 2D Array Demo ---\n";
+    dynamic2DArrayDemo();
+
+    // Practice problems
+    activity1_person();
+    activity2_students();
+    activity3_arrayPointer();
+
+    int demo[5] = {5, 2, 9, 1, 3};
+    cout << "\n[Activity 4]\nSmallest: " << smallest_value(demo, 5) << '\n';
+    traversal_back(demo, 5);
+
+    return 0;
+}
+
+
+
+
+// ==============================
+// ========== LAB 02 ============
+// ADT & Singly Linked List
+// ==============================
+
+#include <iostream>
+using namespace std;
+
+struct SNode {
+    int data;
+    SNode* next;
+    SNode(int d) : data(d), next(nullptr) {}
+};
+
+class LinkedList {
+public:
+    SNode* head;
+    LinkedList() : head(nullptr) {}
+
+    void push_back(int val) {
+        SNode* n = new SNode(val);
+        if (!head) { head = n; return; }
+        SNode* t = head;
+        while (t->next) t = t->next;
+        t->next = n;
+    }
+
+    void push_front(int val) {
+        SNode* n = new SNode(val);
+        n->next = head;
+        head = n;
+    }
+
+    void pop_front() {
+        if (!head) return;
+        SNode* t = head;
+        head = head->next;
+        delete t;
+    }
+
+    void pop_back() {
+        if (!head) return;
+        if (!head->next) { delete head; head = nullptr; return; }
+        SNode* t = head;
+        while (t->next && t->next->next) t = t->next;
+        delete t->next;
+        t->next = nullptr;
+    }
+
+    bool search(int key) {
+        SNode* t = head;
+        while (t) { if (t->data == key) return true; t = t->next; }
+        return false;
+    }
+
+    void print() {
+        cout << "List: ";
+        SNode* t = head;
+        while (t) { cout << t->data << ' '; t = t->next; }
+        cout << '\n';
+    }
+};
+
+// Practice Problems
+int countNodes(SNode* head) {
+    int c = 0;
+    while (head) { ++c; head = head->next; }
+    return c;
+}
+
+bool isListEmpty(SNode* head) {
+    return head == nullptr;
+}
+
+void deleteByValue(SNode*& head, int value) {
+    if (!head) return;
+    if (head->data == value) {
+        SNode* t = head;
+        head = head->next;
+        delete t;
+        return;
+    }
+    SNode* t = head;
+    while (t->next && t->next->data != value) t = t->next;
+    if (t->next) {
+        SNode* d = t->next;
+        t->next = d->next;
+        delete d;
+    }
+}
+
+int main() {
+    cout << "===== LAB 02: ADT & Singly Linked List =====\n\n";
+
+    LinkedList ll;
+    ll.push_back(10);
+    ll.push_back(20);
+    ll.push_back(30);
+    ll.print();
+
+    cout << "search(20): " << (ll.search(20) ? "found" : "not found") << '\n';
+    cout << "search(99): " << (ll.search(99) ? "found" : "not found") << '\n';
+
+    // Practice: countNodes, isListEmpty, deleteByValue
+    cout << "Node count: " << countNodes(ll.head) << '\n';
+    cout << "Is empty?  : " << (isListEmpty(ll.head) ? "true" : "false") << '\n';
+
+    deleteByValue(ll.head, 20);
+    ll.print();
+    cout << "Node count after delete 20: " << countNodes(ll.head) << '\n';
+
+    deleteByValue(ll.head, 10);
+    deleteByValue(ll.head, 30);
+    cout << "Is empty after deleting all? " << (isListEmpty(ll.head) ? "true" : "false") << '\n';
+
+    return 0;
+}
+
+
+
+
+// ==============================
+// ========== LAB 03 ============
+// Doubly Linked List
+// ==============================
+
+#include <iostream>
+using namespace std;
+
+struct DNode {
+    int data;
+    DNode* next;
+    DNode* prev;
+    DNode(int d) : data(d), next(nullptr), prev(nullptr) {}
+};
+
+class DoublyLinkedList {
+public:
+    DNode* head;
+    DoublyLinkedList() : head(nullptr) {}
+
+    void insertFront(int data) {
+        DNode* n = new DNode(data);
+        n->next = head;
+        if (head) head->prev = n;
+        head = n;
+    }
+
+    void insertAfter(DNode* prev_node, int data) {
+        if (!prev_node) return;
+        DNode* n = new DNode(data);
+        n->next = prev_node->next;
+        n->prev = prev_node;
+        if (prev_node->next) prev_node->next->prev = n;
+        prev_node->next = n;
+    }
+
+    void insertEnd(int data) {
+        DNode* n = new DNode(data);
+        if (!head) { head = n; return; }
+        DNode* t = head;
+        while (t->next) t = t->next;
+        t->next = n;
+        n->prev = t;
+    }
+
+    void deleteNode(DNode* del) {
+        if (!head || !del) return;
+        if (head == del) head = del->next;
+        if (del->next) del->next->prev = del->prev;
+        if (del->prev) del->prev->next = del->next;
+        delete del;
+    }
+
+    void print() {
+        cout << "DLL: ";
+        DNode* t = head;
+        while (t) { cout << t->data << ' '; t = t->next; }
+        cout << '\n';
+    }
+};
+
+int main() {
+    cout << "===== LAB 03: Doubly Linked List =====\n\n";
+    DoublyLinkedList dl;
+    dl.insertFront(10);
+    dl.insertEnd(20);
+    dl.insertEnd(30);
+    dl.print();
+
+    // insertAfter(head, 15)
+    if (dl.head) dl.insertAfter(dl.head, 15);
+    dl.print();
+
+    // delete middle node (the 20)
+    DNode* t = dl.head;
+    while (t && t->data != 20) t = t->next;
+    dl.deleteNode(t);
+    dl.print();
+
+    return 0;
+}
+
+
+
+
+// ==============================
+// ========== LAB 04 ============
+// Stack (Array + Linked List)
+// ==============================
+
+#include <iostream>
+using namespace std;
+
+// -------- Stack using Array --------
+#define MAX 5
+class StackArray {
+    int arr[MAX];
+    int top;
+public:
+    StackArray() : top(-1) {}
+    bool isFull()  { return top == MAX - 1; }
+    bool isEmpty() { return top == -1; }
+    void push(int v) {
+        if (isFull()) cout << "Stack is full\n";
+        else arr[++top] = v;
+    }
+    void pop() {
+        if (isEmpty()) cout << "Stack is empty\n";
+        else --top;
+    }
+    int peek() { return isEmpty() ? -1 : arr[top]; }
+    void print() {
+        cout << "Stack(Array): ";
+        for (int i = 0; i <= top; ++i) cout << arr[i] << ' ';
+        cout << '\n';
+    }
+};
+
+// -------- Stack using Linked List --------
+struct SNodeL4 {
+    int data;
+    SNodeL4* next;
+    SNodeL4(int d) : data(d), next(nullptr) {}
+};
+
+class StackList {
+    SNodeL4* top;
+public:
+    StackList() : top(nullptr) {}
+    bool isEmpty() { return top == nullptr; }
+    void push(int v) {
+        SNodeL4* n = new SNodeL4(v);
+        n->next = top;
+        top = n;
+    }
+    void pop() {
+        if (isEmpty()) { cout << "Stack is empty\n"; return; }
+        SNodeL4* t = top; top = top->next; delete t;
+    }
+    int peek() { return isEmpty() ? -1 : top->data; }
+    void print() {
+        cout << "Stack(LinkedList): ";
+        SNodeL4* t = top;
+        while (t) { cout << t->data << ' '; t = t->next; }
+        cout << '\n';
+    }
+};
+
+int main() {
+    cout << "===== LAB 04: Stack (Array + Linked List) =====\n\n";
+
+    StackArray sa;
+    sa.push(1); sa.push(2); sa.push(3); sa.print();
+    cout << "peek: " << sa.peek() << '\n';
+    sa.pop(); sa.print();
+
+    StackList sl;
+    sl.push(10); sl.push(20); sl.push(30); sl.print();
+    cout << "peek: " << sl.peek() << '\n';
+    sl.pop(); sl.print();
+
+    return 0;
+}
+
+
+
+
+// ==============================
+// ========== LAB 05 ============
+// Queue (Array + Linked List)
+// ==============================
+
+#include <iostream>
+using namespace std;
+
+// -------- Queue using Array --------
+#define QMAX 5
+class QueueArray {
+    int a[QMAX];
+    int front, rear;
+public:
+    QueueArray() : front(-1), rear(-1) {}
+    bool isEmpty() { return front == -1; }
+    bool isFull()  { return rear == QMAX - 1; }
+    void enqueue(int v) {
+        if (isFull()) { cout << "Queue full\n"; return; }
+        if (front == -1) front = 0;
+        a[++rear] = v;
+    }
+    void dequeue() {
+        if (isEmpty()) { cout << "Queue empty\n"; return; }
+        ++front;
+        if (front > rear) front = rear = -1;
+    }
+    int peek() { return isEmpty() ? -1 : a[front]; }
+    void print() {
+        if (isEmpty()) { cout << "Queue empty\n"; return; }
+        cout << "Queue(Array): ";
+        for (int i = front; i <= rear; ++i) cout << a[i] << ' ';
+        cout << '\n';
+    }
+};
+
+// -------- Queue using Linked List --------
+struct QNode {
+    int data;
+    QNode* next;
+    QNode(int d) : data(d), next(nullptr) {}
+};
+
+class QueueList {
+    QNode* front;
+    QNode* rear;
+public:
+    QueueList() : front(nullptr), rear(nullptr) {}
+    bool isEmpty() { return front == nullptr; }
+    void enqueue(int v) {
+        QNode* n = new QNode(v);
+        if (!rear) { front = rear = n; return; }
+        rear->next = n; rear = n;
+    }
+    void dequeue() {
+        if (isEmpty()) { cout << "Queue empty\n"; return; }
+        QNode* t = front; front = front->next; if (!front) rear = nullptr; delete t;
+    }
+    int peek() { return isEmpty() ? -1 : front->data; }
+    void print() {
+        cout << "Queue(LinkedList): ";
+        QNode* t = front; while (t) { cout << t->data << ' '; t = t->next; } cout << '\n';
+    }
+};
+
+int main() {
+    cout << "===== LAB 05: Queue (Array + Linked List) =====\n\n";
+
+    QueueArray qa;
+    qa.enqueue(1); qa.enqueue(2); qa.enqueue(3); qa.print();
+    cout << "peek: " << qa.peek() << '\n';
+    qa.dequeue(); qa.print();
+
+    QueueList ql;
+    ql.enqueue(10); ql.enqueue(20); ql.enqueue(30); ql.print();
+    cout << "peek: " << ql.peek() << '\n';
+    ql.dequeue(); ql.print();
+
+    return 0;
+}
+
