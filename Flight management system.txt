@@ -1,8 +1,7 @@
-// ==============================
-// ========== LAB 01 ============
-// Structures, Pointers, Arrays
-// ==============================
-
+// ================================================================
+// LAB 01: Structures, Pointers, Arrays
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
 #include <iostream>
 using namespace std;
 
@@ -106,7 +105,7 @@ void activity2_students() {
     cout << "\nNames with even roll numbers:\n";
     for (int i = 0; i < N; ++i) if ((s[i].rollno % 2) == 0) cout << s[i].name << '\n';
 
-    int query = 4; // example; replace with user input if needed
+    int query = 4; // fixed example
     cout << "\nDetails for roll no " << query << ":\n";
     for (int i = 0; i < N; ++i) if (s[i].rollno == query) {
         cout << s[i].name << ", Age: " << s[i].age << ", Address: " << s[i].address << '\n';
@@ -140,11 +139,9 @@ void traversal_back(int* temp, int size) {
         cout << "Value: " << temp[i] << " at address: " << (temp + i) << '\n';
 }
 
-// -------- MAIN (LAB 01) --------
 int main() {
     cout << "===== LAB 01: Structures, Pointers, Arrays =====\n\n";
 
-    // Structures examples
     Books b1 = {"Learn C++ Programming", "Chand Miyan", "C++ Programming", 6495407};
     Books b2 = {"Telecom Billing", "Yakit Singha", "Telecom", 6495700};
     printBookByValue(b1);
@@ -157,7 +154,6 @@ int main() {
     cout << "\n--- Dynamic 2D Array Demo ---\n";
     dynamic2DArrayDemo();
 
-    // Practice problems
     activity1_person();
     activity2_students();
     activity3_arrayPointer();
@@ -171,12 +167,10 @@ int main() {
 
 
 
-
-// ==============================
-// ========== LAB 02 ============
-// ADT & Singly Linked List
-// ==============================
-
+// ================================================================
+// LAB 02: Abstract Data Types & Singly Linked List
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
 #include <iostream>
 using namespace std;
 
@@ -235,7 +229,7 @@ public:
     }
 };
 
-// Practice Problems
+// Practice: count, empty, delete specific
 int countNodes(SNode* head) {
     int c = 0;
     while (head) { ++c; head = head->next; }
@@ -275,7 +269,6 @@ int main() {
     cout << "search(20): " << (ll.search(20) ? "found" : "not found") << '\n';
     cout << "search(99): " << (ll.search(99) ? "found" : "not found") << '\n';
 
-    // Practice: countNodes, isListEmpty, deleteByValue
     cout << "Node count: " << countNodes(ll.head) << '\n';
     cout << "Is empty?  : " << (isListEmpty(ll.head) ? "true" : "false") << '\n';
 
@@ -292,12 +285,10 @@ int main() {
 
 
 
-
-// ==============================
-// ========== LAB 03 ============
-// Doubly Linked List
-// ==============================
-
+// ================================================================
+// LAB 03: Doubly Linked List
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
 #include <iostream>
 using namespace std;
 
@@ -362,11 +353,9 @@ int main() {
     dl.insertEnd(30);
     dl.print();
 
-    // insertAfter(head, 15)
     if (dl.head) dl.insertAfter(dl.head, 15);
     dl.print();
 
-    // delete middle node (the 20)
     DNode* t = dl.head;
     while (t && t->data != 20) t = t->next;
     dl.deleteNode(t);
@@ -377,12 +366,10 @@ int main() {
 
 
 
-
-// ==============================
-// ========== LAB 04 ============
-// Stack (Array + Linked List)
-// ==============================
-
+// ================================================================
+// LAB 04: Stack (Array + Linked List)
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
 #include <iostream>
 using namespace std;
 
@@ -459,12 +446,10 @@ int main() {
 
 
 
-
-// ==============================
-// ========== LAB 05 ============
-// Queue (Array + Linked List)
-// ==============================
-
+// ================================================================
+// LAB 05: Queue (Array + Linked List)
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
 #include <iostream>
 using namespace std;
 
@@ -541,3 +526,343 @@ int main() {
     return 0;
 }
 
+
+
+// ================================================================
+// COMMON PROBLEM: Singly Linked List - Reverse (Iterative & Recursive)
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
+#include <iostream>
+using namespace std;
+
+struct NodeRev {
+    int data;
+    NodeRev* next;
+    NodeRev(int d) : data(d), next(nullptr) {}
+};
+
+void pushFront(NodeRev*& head, int val) {
+    NodeRev* n = new NodeRev(val);
+    n->next = head;
+    head = n;
+}
+
+NodeRev* reverseIterative(NodeRev* head) {
+    NodeRev* prev = nullptr;
+    NodeRev* curr = head;
+    while (curr) {
+        NodeRev* nxt = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nxt;
+    }
+    return prev;
+}
+
+NodeRev* reverseRecursive(NodeRev* head) {
+    if (!head || !head->next) return head;
+    NodeRev* rest = reverseRecursive(head->next);
+    head->next->next = head;
+    head->next = nullptr;
+    return rest;
+}
+
+void printList(NodeRev* head) {
+    while (head) { cout << head->data << ' '; head = head->next; }
+    cout << '\n';
+}
+
+int main() {
+    cout << "===== COMMON: Reverse Singly Linked List =====\n\n";
+    NodeRev* head = nullptr;
+    pushFront(head, 5); pushFront(head, 4); pushFront(head, 3);
+    pushFront(head, 2); pushFront(head, 1);
+    cout << "Original: "; printList(head);
+
+    head = reverseIterative(head);
+    cout << "Reversed (Iterative): "; printList(head);
+
+    head = reverseRecursive(head);
+    cout << "Reversed back (Recursive): "; printList(head);
+
+    return 0;
+}
+
+
+
+// ================================================================
+// COMMON PROBLEM: Singly Linked List - Find Middle (Slow/Fast pointers)
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
+#include <iostream>
+using namespace std;
+
+struct NodeMid {
+    int data;
+    NodeMid* next;
+    NodeMid(int d) : data(d), next(nullptr) {}
+};
+
+void append(NodeMid*& head, int val) {
+    NodeMid* n = new NodeMid(val);
+    if (!head) { head = n; return; }
+    NodeMid* t = head; while (t->next) t = t->next; t->next = n;
+}
+
+NodeMid* findMiddle(NodeMid* head) {
+    NodeMid* slow = head;
+    NodeMid* fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+void printList(NodeMid* head) { while (head){ cout<<head->data<<' '; head=head->next; } cout<<'\n'; }
+
+int main() {
+    cout << "===== COMMON: Find Middle of Singly Linked List =====\n\n";
+    NodeMid* head = nullptr;
+    for (int i = 1; i <= 7; ++i) append(head, i);
+    printList(head);
+    NodeMid* mid = findMiddle(head);
+    if (mid) cout << "Middle: " << mid->data << '\n';
+    return 0;
+}
+
+
+
+// ================================================================
+// COMMON PROBLEM: Singly Linked List - Detect Loop (Floyd's Cycle)
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
+#include <iostream>
+using namespace std;
+
+struct NodeLoop {
+    int data;
+    NodeLoop* next;
+    NodeLoop(int d) : data(d), next(nullptr) {}
+};
+
+bool hasLoop(NodeLoop* head) {
+    NodeLoop* slow = head;
+    NodeLoop* fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) return true;
+    }
+    return false;
+}
+
+int main() {
+    cout << "===== COMMON: Detect Loop in Singly Linked List =====\n\n";
+    NodeLoop* a = new NodeLoop(1);
+    NodeLoop* b = new NodeLoop(2);
+    NodeLoop* c = new NodeLoop(3);
+    NodeLoop* d = new NodeLoop(4);
+    a->next = b; b->next = c; c->next = d; d->next = nullptr; // no loop
+    cout << "Has loop? " << (hasLoop(a) ? "Yes" : "No") << '\n';
+    d->next = b; // create loop
+    cout << "Has loop after linking d->next=b? " << (hasLoop(a) ? "Yes" : "No") << '\n';
+    // Note: memory leak acceptable for demo; loop prevents safe deletion.
+    return 0;
+}
+
+
+
+// ================================================================
+// COMMON PROBLEM: Stack - Reverse a Stack using Recursion
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
+#include <iostream>
+using namespace std;
+
+class StackArr {
+    int a[50];
+    int top;
+public:
+    StackArr() : top(-1) {}
+    bool isEmpty() { return top == -1; }
+    bool isFull()  { return top == 49; }
+    void push(int v){ if(!isFull()) a[++top]=v; }
+    int  pop(){ if(!isEmpty()) return a[top--]; return -1; }
+    int  peek(){ return isEmpty() ? -1 : a[top]; }
+    void print(){ cout<<"Stack: "; for(int i=0;i<=top;++i) cout<<a[i]<<' '; cout<<'\n'; }
+};
+
+void insertAtBottom(StackArr& s, int x){
+    if(s.isEmpty()){ s.push(x); return; }
+    int t = s.pop();
+    insertAtBottom(s, x);
+    s.push(t);
+}
+
+void reverseStack(StackArr& s){
+    if(s.isEmpty()) return;
+    int t = s.pop();
+    reverseStack(s);
+    insertAtBottom(s, t);
+}
+
+int main(){
+    cout << "===== COMMON: Reverse Stack using Recursion =====\n\n";
+    StackArr s; s.push(1); s.push(2); s.push(3); s.push(4);
+    s.print();
+    reverseStack(s);
+    cout << "After reverse:\n";
+    s.print();
+    return 0;
+}
+
+
+
+// ================================================================
+// COMMON PROBLEM: Stack - Sort a Stack using Recursion
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
+#include <iostream>
+using namespace std;
+
+class StackSort {
+    int a[50]; int top;
+public:
+    StackSort(): top(-1) {}
+    bool isEmpty(){ return top==-1; }
+    bool isFull(){ return top==49; }
+    void push(int v){ if(!isFull()) a[++top]=v; }
+    int pop(){ return isEmpty()? -1 : a[top--]; }
+    int peek(){ return isEmpty()? -1 : a[top]; }
+    void print(){ cout<<"Stack: "; for(int i=0;i<=top;++i) cout<<a[i]<<' '; cout<<'\n'; }
+};
+
+void sortedInsert(StackSort& s, int x){
+    if(s.isEmpty() || s.peek()<=x){ s.push(x); return; }
+    int t = s.pop();
+    sortedInsert(s, x);
+    s.push(t);
+}
+void sortStack(StackSort& s){
+    if(s.isEmpty()) return;
+    int t = s.pop();
+    sortStack(s);
+    sortedInsert(s, t);
+}
+
+int main(){
+    cout << "===== COMMON: Sort Stack using Recursion =====\n\n";
+    StackSort s; s.push(3); s.push(1); s.push(4); s.push(2);
+    cout<<"Before sort:\n"; s.print();
+    sortStack(s);
+    cout<<"After sort:\n"; s.print();
+    return 0;
+}
+
+
+
+// ================================================================
+// COMMON PROBLEM: Queue - Reverse a Queue using a Stack
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
+#include <iostream>
+using namespace std;
+
+class QueueA {
+    int a[50]; int f,r;
+public:
+    QueueA(): f(-1), r(-1) {}
+    bool isEmpty(){ return f==-1; }
+    bool isFull(){ return r==49; }
+    void enqueue(int v){ if(isFull()) return; if(f==-1) f=0; a[++r]=v; }
+    int dequeue(){ if(isEmpty()) return -1; int v=a[f++]; if(f>r) f=r=-1; return v; }
+    int peek(){ return isEmpty()? -1 : a[f]; }
+    void print(){ if(isEmpty()){ cout<<"Queue empty\n"; return;} cout<<"Queue: "; for(int i=f;i<=r;++i) cout<<a[i]<<' '; cout<<'\n'; }
+};
+
+class StackA50 {
+    int a[50]; int t;
+public:
+    StackA50(): t(-1) {}
+    bool isEmpty(){ return t==-1; }
+    bool isFull(){ return t==49; }
+    void push(int v){ if(!isFull()) a[++t]=v; }
+    int pop(){ return isEmpty()? -1 : a[t--]; }
+};
+
+void reverseQueue(QueueA& q){
+    StackA50 s;
+    while(!q.isEmpty()) s.push(q.dequeue());
+    while(!s.isEmpty()) q.enqueue(s.pop());
+}
+
+int main(){
+    cout << "===== COMMON: Reverse Queue using Stack =====\n\n";
+    QueueA q; q.enqueue(1); q.enqueue(2); q.enqueue(3); q.print();
+    reverseQueue(q);
+    cout<<"After reverse:\n"; q.print();
+    return 0;
+}
+
+
+
+// ================================================================
+// COMMON PROBLEM: Queue using Two Stacks
+// (Complete program: ONLY #include <iostream>)
+// ================================================================
+#include <iostream>
+using namespace std;
+
+class StackX {
+    int a[100]; int t;
+public:
+    StackX(): t(-1) {}
+    bool isEmpty(){ return t==-1; }
+    bool isFull(){ return t==99; }
+    void push(int v){ if(!isFull()) a[++t]=v; }
+    int pop(){ return isEmpty()? -1 : a[t--]; }
+    int peek(){ return isEmpty()? -1 : a[t]; }
+};
+
+class QueueTwoStacks {
+    StackX s1, s2;
+public:
+    void enqueue(int v){ s1.push(v); }
+    int dequeue(){
+        if(s2.isEmpty()){
+            while(!s1.isEmpty()) s2.push(s1.pop());
+        }
+        return s2.pop();
+    }
+    bool isEmpty(){ return s1.isEmpty() && s2.isEmpty(); }
+    int front(){
+        if(s2.isEmpty()){
+            while(!s1.isEmpty()) s2.push(s1.pop());
+        }
+        return s2.peek();
+    }
+    void print(){
+        // For demo: move all to s2 to print in order, then move back.
+        while(!s2.isEmpty()) s1.push(s2.pop());
+        while(!s1.isEmpty()){ s2.push(s1.pop()); }
+        // now s2 has front at top; print by popping to temp then restoring
+        StackX temp;
+        while(!s2.isEmpty()){ int v=s2.pop(); temp.push(v); }
+        cout<<"Queue: ";
+        while(!temp.isEmpty()){ int v=temp.pop(); cout<<v<<' '; s2.push(v); }
+        cout<<'\n';
+    }
+};
+
+int main(){
+    cout << "===== COMMON: Queue implemented using Two Stacks =====\n\n";
+    QueueTwoStacks q;
+    q.enqueue(10); q.enqueue(20); q.enqueue(30);
+    q.print();
+    cout<<"front: "<<q.front()<<'\n';
+    cout<<"dequeue: "<<q.dequeue()<<'\n';
+    q.print();
+    q.enqueue(40); q.print();
+    return 0;
+}
